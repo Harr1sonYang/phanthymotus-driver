@@ -188,10 +188,13 @@ def _start_registration(mcp_port: int, name: str, category: str):
 def main():
     global _bundle
 
-    network_iface = sys.argv[1] if len(sys.argv) > 1 else None
     cfg           = _load_config()
+    network_iface = (
+        sys.argv[1] if len(sys.argv) > 1
+        else os.environ.get("DDS_INTERFACE", cfg.get("dds_interface"))
+    )
     namespace     = _resolve_namespace(cfg)
-    mcp_port      = int(cfg.get("mcp_port", 15702))
+    mcp_port      = int(cfg.get("mcp_port", 15722))
     variant       = cfg.get("variant", "sp")
 
     print(f"[adam] namespace={namespace} variant={variant} mcp_port={mcp_port}")
